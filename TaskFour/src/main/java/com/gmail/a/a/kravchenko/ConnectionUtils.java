@@ -14,9 +14,9 @@ public class ConnectionUtils {
         return connection;
     }
 
-    public static void toCloseConnection (ClientsDAO clientsDAO) {
+    public static void toCloseConnection (Connection connection) {
         try {
-            clientsDAO.getConnection().close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

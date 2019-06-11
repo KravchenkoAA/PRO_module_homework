@@ -9,7 +9,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         ClientsDAO clientsDAO = null;
         try {
-            clientsDAO = new ClientsDAO();
+            clientsDAO = new ReleaseClientsDAO();
             for (; ; ) {
                 toCLS();
                 toPrintMenu();
@@ -58,7 +58,8 @@ public class Main {
             e.printStackTrace();
         } finally {
             scanner.close();
-            ConnectionUtils.toCloseConnection(clientsDAO);
+            ReleaseClientsDAO releaseClientsDAO = (ReleaseClientsDAO) clientsDAO;
+            ConnectionUtils.toCloseConnection(releaseClientsDAO.getConnection());
         }
     }
 
@@ -131,14 +132,14 @@ public class Main {
         }
     }
 
-    public static void toAddClient (ClientsDAO clientsDAO) throws SQLException{
+    public static void toAddClient(ClientsDAO clientsDAO) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         Clients newClient = new Clients();
         System.out.println("Input client name");
         newClient.setName(scanner.nextLine());
         System.out.println("Input client age");
         newClient.setAge(Integer.parseInt(scanner.nextLine()));
-        if (clientsDAO.createClient(newClient)) {
+        if (clientsDAO.create(newClient)) {
             System.out.println("New client add successful");
         }
     }
@@ -177,7 +178,7 @@ public class Main {
         }
         System.out.println("Delete data of this client? (y/n)");
         if ("y".equals(scanner.nextLine().toLowerCase())) {
-            if (clientsDAO.deleteClient(clientForDelete)) {
+            if (clientsDAO.delete(clientForDelete.getId())) {
                 System.out.println("Is client deleted  successful");
             }
         } else {
